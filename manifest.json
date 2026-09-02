@@ -1,0 +1,10 @@
+{
+  "name": "DB Manage",
+  "short_name": "DB Manage",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090a0d",
+  "theme_color": "#0b0c10",
+  "description": "Simple client and vehicle project management.",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
