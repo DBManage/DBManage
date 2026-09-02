@@ -19,10 +19,16 @@ form.onsubmit=e=>{e.preventDefault();const id=$("editId").value||crypto.randomUU
 $("search").oninput=render;
 function render(){
  const q=$("search").value.toLowerCase().trim(), list=projects.filter(x=>[x.client,x.project,x.vehicle,x.progress,x.notes].join(" ").toLowerCase().includes(q));
- const total=projects.reduce((s,x)=>s+Number(x.amount||0),0), completion=projects.length?Math.round(projects.reduce((s,x)=>s+pct(x.progress),0)/projects.length):0;
+ const statusCounts={"Create Design":0,"In Progress":0,"Start Printing":0,"Done":0};
+ projects.forEach(x=>{if(statusCounts[x.progress]!==undefined) statusCounts[x.progress]++;});
  const now=new Date(), start=new Date(now); start.setDate(now.getDate()-now.getDay()); start.setHours(0,0,0,0);
  const weekly=projects.filter(x=>x.date&&new Date(x.date+"T00:00:00")>=start).reduce((s,x)=>s+Number(x.amount||0),0);
- $("projectCount").textContent=projects.length;$("completion").textContent=completion+"%";$("weeklyTotal").textContent=money(weekly);
+ $("projectCount").textContent=projects.length;
+ $("createCount").textContent=statusCounts["Create Design"];
+ $("progressCount").textContent=statusCounts["In Progress"];
+ $("printingCount").textContent=statusCounts["Start Printing"];
+ $("doneCount").textContent=statusCounts["Done"];
+ $("weeklyTotal").textContent=money(weekly);
  $("projectSubtitle").textContent=projects.length===1?"1 project":projects.length+" projects";$("empty").style.display=list.length?"none":"block";
  $("projectList").innerHTML=list.map(x=>{const p=pct(x.progress);return `<article class="project ${p===100?"done":""}">
  <div class="project-main"><div class="client-row"><h3>${esc(x.client)}</h3><span class="badge">${esc(x.vehicle)}</span><span class="badge">${esc(x.progress)}</span></div>
